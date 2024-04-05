@@ -1,0 +1,140 @@
+{% extends "core/base.html" %}
+{% block title %}
+    Chapter {{chapter.name}}-{{manga.name}}
+{% endblock %}
+
+{% block content %}
+<div class = "container">
+    <div class = "row">
+    {% for page in pages  %}
+        <div class = "row d-flex justify-content-center">
+            <div class = "col-md-9">
+                <img src = "{{page.image.url}}" class = "d-block h-100 w-100"> 
+            </div>
+        </div>
+    {% endfor %}
+    <div class = "row d-flex justify-content-center">
+            <div class = "col-md-9 bg-light">
+                {% if chapter.name == 1 and numberOfChapter > 1 %}
+                <div class = "d-flex justify-content-center">
+                    <nav aria-label="...">
+                    <ul class="pagination">
+                        <li class="page-item">
+                        <a class="next-link" href="#" ><button type="button" class="btn btn-outline-secondary btn-lg" disabled>Previous</button></a>
+                        </li>
+                    </ul>
+                    </nav>
+                    <div class="dropdown">
+                        <a class="btn dropdown-toggle btn-lg btn-outline-secondary" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                        Chapter {{chapter.name}}
+                        </a>
+
+                        <div class="dropdown-menu">
+                            {% for chapter in chapters_in_manga %}
+                                <a class="dropdown-item" href="{% url 'readingPage:readingPage' chapter.id%}">Chapter {{chapter.name}}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <nav aria-label="...">
+                    <ul class="pagination">
+                        <li class="page-item">
+                        <a  href="{% url 'readingPage:readingPage' nextChap.id %}"><button type="button" class="btn btn-outline-secondary btn-lg">Next</button></a>
+                        </li>
+                    </ul>
+                    </nav>
+                </div>
+                {%elif chapter.name == numberOfChapter and numberOfChapter > 1%}
+                    <div class = "d-flex justify-content-center">
+                        <nav aria-label="...">
+                        <ul class="pagination">
+                            <li class="page-item">
+                            <a href="{% url 'readingPage:readingPage' prevChap.id%}" ><button type="button" class="btn btn-outline-secondary btn-lg" >Previous</button></a>
+                            </li>
+                        </ul>
+                        </nav>
+                        <div class="dropdown">
+                            <a class="btn btn-outline-secondary dropdown-toggle btn-lg" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                            Chapter {{chapter.name}}
+                            </a>
+
+                            <div class="dropdown-menu">
+                                {% for chapter in chapters_in_manga %}
+                                    <a class="dropdown-item" href="{% url 'readingPage:readingPage' chapter.id%}">Chapter {{chapter.name}}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <nav aria-label="...">
+                        <ul class="pagination">
+                            <li class="page-item">
+                            <a  href="#"><button type="button" class="btn btn-outline-secondary btn-lg" disabled>Next</button></a>
+                            </li>
+                        </ul>
+                        </nav>
+                    </div>
+                {% elif chapter.name == 1 and numberOfChapter == 1%}
+                        <div class = "d-flex justify-content-center">
+                        <nav aria-label="...">
+                        <ul class="pagination">
+                            <li class="page-item">
+                            <a href="#" ><button type="button" class="btn btn-outline-secondary btn-lg" disabled >Previous</button></a>
+                            </li>
+                        </ul>
+                        </nav>
+                        <div class="dropdown">
+                            <a class="btn btn-outline-secondary dropdown-toggle btn-lg" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                            Chapter {{chapter.name}}
+                            </a>
+                            <div class="dropdown-menu">
+                                {% for chapter in chapters_in_manga %}
+                                    <a class="dropdown-item" href="{% url 'readingPage:readingPage' chapter.id%}">Chapter {{chapter.name}}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <nav aria-label="...">
+                        <ul class="pagination">
+                            <li class="page-item">
+                            <a  href="#"><button type="button" class="btn btn-outline-secondary btn-lg" disabled >Next</button></a>
+                            </li>
+                        </ul>
+                        </nav>
+                    </div>
+                {% else %}
+                    <div class = "d-flex justify-content-center">
+                        <nav aria-label="...">
+                        <ul class="pagination">
+                            <li class="page-item">
+                            <a href="{% url 'readingPage:readingPage' prevChap.id%}" ><button type="button" class="btn btn-outline-secondary btn-lg" >Previous</button></a>
+                            </li>
+                        </ul>
+                        </nav>
+                        <div class="dropdown">
+                            <a class="btn btn-outline-secondary dropdown-toggle btn-lg" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                            Chapter {{chapter.name}}
+                            </a>
+                            <div class="dropdown-menu">
+                                {% for chapter in chapters_in_manga %}
+                                    <a class="dropdown-item" href="{% url 'readingPage:readingPage' chapter.id%}">Chapter {{chapter.name}}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <nav aria-label="...">
+                        <ul class="pagination">
+                            <li class="page-item">
+                            <a  href="{%url 'readingPage:readingPage' nextChap.id%}"><button type="button" class="btn btn-outline-secondary btn-lg" >Next</button></a>
+                            </li>
+                        </ul>
+                        </nav>
+                    </div>
+                {% endif %}
+            </div>
+    </div>
+    
+    </div>
+
+
+</div>
+
+
+</div>
+  <a href="#" class="top"><button type="button" class="btn btn-outline-danger">Lên đầu trang</button></a>
+{% endblock  %}

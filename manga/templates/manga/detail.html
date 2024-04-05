@@ -1,0 +1,81 @@
+{% extends "core/base.html" %}
+
+{% block title %}
+    {{manga.name}}
+{% endblock  %}
+
+{% block content %}
+<div class = "mw-100" style = "height: 20rem; background: #919191">
+    <img src = "{{manga.cover.url}}" class="d-block h-100 w-100" style = "object-fit:cover"/>
+</div>
+<div class="container", style = "background-color: white">
+  <div class="row">
+    <div class = "col-sm-3" >
+        <div class = "row">
+            <img src = "{{manga.banner.url}}" class = "d-block h-100 w-100">
+        </div>
+        <br>
+        <div class = "row">
+            <div class = "d-flex justify-content-center">
+                <div class = "col ">
+                <form action = "{% url 'manga:like_manga' manga.id%}" method = "POST">
+                    {% csrf_token %}
+                    {% if user.is_authenticated %}
+                        {% if liked %}
+                        <button type = "submit", name = "manga_id", value = "{{manga.id}}" class ="btn btn-outline-dark" >Đã thích</button>
+                        {% else %}
+                        <button type = "submit", name = "manga_id", value = "{{manga.id}}" class ="btn btn-outline-dark" >Thích</button>
+                        {% endif %}
+                    {%else%}
+                        <button type = "submit", name = "manga_id", value = "{{manga.id}}" class ="btn btn-outline-secondary" disabled >Thích</button>
+                        <br/>
+                        <small>Bạn cần đăng nhập để like</small>
+                    {% endif%}
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class = "col-6">
+        <div class="d-flex justify-content-start"><h1>{{manga.name}}</h1>
+        </div>
+        <br/>
+        <div class="d-flex justify-content-start">
+            <p>Tác giả: <a class = " text-reset" href = "{%url 'manga:author' author.id%}">{{manga.author}}</a><br/><br/>
+            Thể loại: {% for tag in tags %} <a class = "text-decoration-none"href = "{% url 'core:mangaByTag' tag.id%}"><button type="button" class="btn btn-outline-secondary">{{tag.name}}</button>
+            </a>{% endfor %}<br/><br/>
+            Số chương hiện có: {{chapters.count}}<br/>
+            Số lượt xem <i class="fa-solid fa-eye"></i>: {{manga.views}}<br/>
+            Số lượt thích <i class="fa-solid fa-thumbs-up"></i>:{{like_count}}
+            <br/>
+            {% csrf_token %}
+            {% if user.is_authenticated %}
+                {% if last_chapter.name > 1%}
+                    Bạn đang đọc đến chương: <a href = '{% url "readingPage:readingPage" last_chapter.id %} ' class = 'text-reset'>{{last_chapter.name}}</a>
+                {% else %}
+                {% endif %}
+            {% endif %}
+            <br/>
+            </p>
+        </div>
+        <br/>
+        <div class="d-flex justify-content-start overflow-auto" style = "max-height: 200px">
+            <p>Giới thiệu: <br>{{manga.overlook}}</p>
+        </div>
+    </div>
+    
+    <div class = "col-sm-3">
+        <div class = "row">
+                <h3> Danh sách chương </h3>
+            </div>
+            <div class = "row">
+                {% for chapter in chapters %}
+                    <div class = "row">
+                        <a href = "{% url 'readingPage:readingPage' chapter.id %}" class = "d-flex justify-content-center text-reset "> Chương {{chapter.name}}</a>
+                    </div>
+                {% endfor %}
+            </div>
+    </div>
+  </div>
+</div>
+{% endblock  %}

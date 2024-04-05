@@ -1,0 +1,58 @@
+{% extends "core/base.html" %}
+
+{% block titile %}{{author.name}}{% endblock titile %}
+
+{% block content %}
+<h2 class="mb-12 text-2xl text-center">Truyện cùng tác giả {{author.name}}</h2>
+<div class="container" style="background-color: white">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+            {% for manga in mangas %}
+                <div class="col justify-content-center d-flex">
+                    <a class="text-reset text-decoration-none" href="{% url 'manga:detail' manga.id %}">
+                        <div>
+                            <img src="{{ manga.banner.url }}" class="rounded-t-xl" width="140" height="200">
+                        </div>
+                        <p style = 'font-size: 20px; text-align: center'>{{ manga.name }}</p>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+<div class="container text-center d-flex justify-content-center">
+    <ul class="pagination">
+        {% if mangas.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ mangas.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        {% endif %}
+
+        <li class="page-item disabled">
+            <span class="page-link">Trang {{ mangas.number }} / {{ mangas.paginator.num_pages }}</span>
+        </li>
+
+        {% if mangas.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ mangas.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ mangas.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+
+</div>
+
+{% endblock content %}

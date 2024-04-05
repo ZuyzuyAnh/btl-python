@@ -1,0 +1,83 @@
+{% extends "core/base.html" %}
+{% block title %}Home{% endblock  %}
+{% block content %}
+<div id="carouselExampleIndicators" class="carousel slide " data-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active d-block w-100 d-flex justify-content-center">
+      <img src="{{most_viewed_manga.cover.url}}" class="d-block h-100 w-100 banner" style = "object-fit:contain"/>
+    </div>
+    {% for manga in sorted_mangas %}
+    <div class="carousel-item">
+      <img src="{{manga.cover.url}}" class="d-block w-100 h-100 banner" style = "object-fit:contain"/>
+    </div>
+    {% endfor %}
+  </div>
+  <button class="carousel-control-prev" type="button" data-target="#carouselExampleIndicators" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-target="#carouselExampleIndicators" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only"></span>
+  </button>
+</div>
+
+<h2 class="mb-12 text-2xl text-center">Tất cả truyện</h2>
+<div class="container" style="background-color: white">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+            {% for manga in mangas %}
+                <div class="col justify-content-center d-flex">
+                    <a class="text-reset text-decoration-none" href="{% url 'manga:detail' manga.id %}">
+                        <div>
+                            <img src="{{ manga.banner.url }}" class="rounded-t-xl" width="140" height="200">
+                        </div>
+                        <p style = 'font-size: 20px; text-align: center'>{{ manga.name }}</p>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+<div class="container text-center d-flex justify-content-center">
+    <ul class="pagination">
+        {% if mangas.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ mangas.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        {% endif %}
+
+        <li class="page-item disabled">
+            <span class="page-link">Trang {{ mangas.number }} / {{ mangas.paginator.num_pages }}</span>
+        </li>
+
+        {% if mangas.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ mangas.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ mangas.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+
+</div>
+
+
+{% endblock  %}

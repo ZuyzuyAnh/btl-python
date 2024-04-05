@@ -1,0 +1,65 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Log in{% endblock %}
+
+{% block content %}
+<section class="h-100 gradient-form" style="background-color: #eee;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-xl-10">
+        <div class="card rounded-3 text-black">
+          <div class="row g-0">
+            <div class="col-lg-6">
+              <div class="card-body p-md-5 mx-md-4">
+
+                <div class="text-center">
+                  <img src="https://i.pinimg.com/236x/aa/3b/46/aa3b46bec6195177a84478a520d9453c.jpg"
+                    style="width: 185px;" alt="logo">
+                  <h4 class="mt-1 mb-5 pb-1">Đăng Nhập</h4>
+                </div>
+
+                <form method = 'post' action = '.'>
+                {%csrf_token%}
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form2Example11">Tên người dùng</label>
+                    {{form.username}}
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <label class="form-label" for="form2Example22">Mật khẩu</label>
+                    {{form.password}}
+                  </div>
+                {% if form.errors or form.non_field_errors %}
+                        <div class="mb-3 p-6 bg-red-100 rounded-xl">
+                            {% for field in form %}
+                                {{ field.errors }}
+                            {% endfor %}
+
+                            {{ form.non_field_errors }}
+                        </div>
+                {% endif %}
+                <button class=" btn btn-primary btn-block fa-lg gradient-custom-2 mb-3">Đăng Nhập</button>
+                  <div class="d-flex align-items-center justify-content-center pb-4">
+                    <p class="mb-0 me-2">Bạn chưa có tài khoản?</p>
+                    <a href="{%url 'core:signup' %}" class = "nav-link " aria-current="page" ><button type="button" class="btn btn-outline-dark">Tạo tài khoản</button></a>
+                    
+                  </div>
+
+                </form>
+
+              </div>
+            </div>
+            <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+              <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+{% endblock %}

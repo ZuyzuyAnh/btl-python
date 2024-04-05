@@ -1,0 +1,104 @@
+{% extends "core/base.html" %}
+{% block title %}
+Tim kiem nang cao
+{% endblock title %}
+
+{% block content %}
+<div class = "container">
+    <form>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+        <label for="inputEmail4">Tên Truyện</label>
+        <input type="search" class="form-control" id="inputEmail4" placeholder="Tên Truyện" name = 'name_contains'>
+        </div>
+        <div class="form-group col-md-6">
+        <label for="inputPassword4">Tác Giả</label>
+        <input type="search" class="form-control" id="inputPassword4" placeholder="Tác Giả" name = 'author'>
+        </div>
+    </div>
+
+    <div class="form-row">
+            <div class="form-group col-md-4">
+            <label for="inputState"></label>
+            <select id="inputState" class="form-control" name = 'sort'>
+                <option selected>Sắp xếp theo</option>
+                <option>A-Z</option>
+                <option>Z-A</option>
+                <option>Ngày Cập Nhật Tăng Dần</option>
+                <option>Ngày Cập Nhật Giảm Dần</option>
+                <option>Lượt Thích Tăng Dần</option>
+                <option>Luot Thích Giảm Dần</option>
+                <option>Lượt Xem Tăng Dần</option>
+                <option>Lượt Xem Giảm Dần</option>
+            </select>
+            </div>
+    </div>
+
+    <div class="form-check container">
+        <div class = "row row-cols-6">
+            {% for tag in tags  %}
+                <div class = "column">
+                <input class="form-check-input" type="checkbox" id="check{{tag.id}}" name="tags" value="{{tag.name}}" unchecked>
+                <label class="form-check-label">{{tag.name}}</label>
+                </div>
+            {% endfor %}
+        </div>
+    
+        
+    </div>
+    <button type="submit" class="btn btn-dark">Tìm kiếm</button>
+    </form>
+</div>
+<h2 class="mb-12 text-2xl text-center">Kết quả tìm kiếm</h2>
+<div class="container" style="background-color: white">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+            {% for manga in mangas %}
+                <div class="col justify-content-center d-flex">
+                    <a class="text-reset text-decoration-none" href="{% url 'manga:detail' manga.id %}">
+                        <div>
+                            <img src="{{ manga.banner.url }}" class="rounded-t-xl" width="140" height="200">
+                        </div>
+                        <p style = 'font-size: 20px; text-align: center'>{{ manga.name }}</p>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+<div class="container text-center d-flex justify-content-center">
+    <ul class="pagination">
+        {% if mangas.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ mangas.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        {% endif %}
+
+        <li class="page-item disabled">
+            <span class="page-link">Trang {{ mangas.number }} / {{ mangas.paginator.num_pages }}</span>
+        </li>
+
+        {% if mangas.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ mangas.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ mangas.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</div>
+
+</div>
+
+{% endblock content %}
